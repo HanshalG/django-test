@@ -1,0 +1,19 @@
+{% load static %}
+
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'assets/main.css' %}">
+</head>
+
+<header>
+    <title>My Blog</title>
+    <h1>My Blog</h1>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:ǓǏǏ"
+rel="stylesheet">
+    <a href="{% url 'home' %}">Home</a> | <a href="{% url 'about' %}">About | <a href="{% url 'blog' %}">Blog</a></a>
+</header>
+
+{% block content %}
+{% endblock content %}
+
+</html>

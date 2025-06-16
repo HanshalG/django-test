@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="post-entry">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+
+    <h2>Comments</h2>
+
+    <textarea id="comment-content"></textarea>
+    <button id="submit-comment">Post Comment</button>
+
+    <ul id="comment-list"></ul>
+    <script>
+        const postId = {{ post.id }};
+    </script>
+    <script type="module" src="{% static 'assets/main.js' %}"></script>
+</div>
+{% endblock content %}
