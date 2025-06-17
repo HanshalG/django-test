@@ -1,4 +1,5 @@
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, View
+from django.shortcuts import render
 from .models import Post, Comment
 from rest_framework import generics, permissions
 from .serializers import CommentSerializer
@@ -28,5 +29,8 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         post_id = self.kwargs['pk']
         serializer.save(post_id=post_id, author=self.request.user)
-        
+
+
+class CounterView(TemplateView):
+    template_name = 'counter.html'
     

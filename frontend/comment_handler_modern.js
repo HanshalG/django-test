@@ -6,7 +6,7 @@ export async function fetchComments(postId, commentList) {
         const data = await response.json();
         commentList.innerHTML = '';
         data.forEach(comment => {
-            const li = document.createElement('li');
+            const li = ddocument.createElement('li');
             li.textContent = `${comment.author_username || 'Anonymous'}: ${comment.body}`;
             commentList.appendChild(li);
         });

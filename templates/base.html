@@ -1,19 +1,35 @@
 {% load static %}
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static 'assets/main.css' %}">
-</head>
-
-<header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Blog</title>
-    <h1>My Blog</h1>
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:ǓǏǏ"
-rel="stylesheet">
-    <a href="{% url 'home' %}">Home</a> | <a href="{% url 'about' %}">About | <a href="{% url 'blog' %}">Blog</a></a>
-</header>
+    <link rel="stylesheet" href="{% static 'assets/main.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+      <nav>
+        <a href="{% url 'home' %}">Home</a> | 
+        <a href="{% url 'about' %}">About</a> | 
+        <a href="{% url 'blog' %}">Blog</a> |
+        <a href="{% url 'counter' %}">Counter</a>
+      </nav>
+    </header>
 
-{% block content %}
-{% endblock content %}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
+    {% if debug %}
+      <script type="module" src="http://localhost:3000/@vite/client"></script>
+      <script type="module" src="http://localhost:3000/frontend/main.js"></script>
+    {% else %}
+      <script type="module" src="{% static 'dist/assets/main.js' %}"></script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+</body>
 </html>

@@ -1,0 +1,19 @@
+{
+  "name": "django_test",
+  "sources": {
+    "dir": "src",
+    "subdirs": true
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".res.js",
+  "bs-dependencies": [
+    "@rescript/core",
+    "rescript-webapi"
+  ],
+  "bsc-flags": [
+    "-open RescriptCore"
+  ]
+}
