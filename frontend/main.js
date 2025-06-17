@@ -2,16 +2,6 @@
 import './styles.css';
 import { setupCounter } from './Counter.bs.js';
 import { fetchComments, submitComment } from './comment_handler.res.js';
-import { createRoot } from 'react-dom/client';
-import Counter from './Counter.res';
-
-// Render the ReScript React component
-const container = document.getElementById('counter-app');
-if (container) {
-  const root = createRoot(container);
-  root.render(<Counter />);
-}
-
 // Initialize the counter
 setupCounter();
 

@@ -12,24 +12,28 @@
 </head>
 <body>
     <header>
-      <nav>
-        <a href="{% url 'home' %}">Home</a> | 
-        <a href="{% url 'about' %}">About</a> | 
-        <a href="{% url 'blog' %}">Blog</a> |
-        <a href="{% url 'counter' %}">Counter</a>
-      </nav>
+        <h1>My Blog</h1>
+        <nav>
+            <a href="{% url 'home' %}">Home</a> | 
+            <a href="{% url 'about' %}">About</a> | 
+            <a href="{% url 'blog' %}">Blog</a> |
+            <a href="{% url 'counter' %}">Counter</a>
+        </nav>
     </header>
 
     <main>
-      {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock content %}
     </main>
 
+    {% block extra_js %}{% endblock %}
+    
     {% if debug %}
-      <script type="module" src="http://localhost:3000/@vite/client"></script>
+      <!-- In development, load from Vite dev server -->
       <script type="module" src="http://localhost:3000/frontend/main.js"></script>
     {% else %}
-      <script type="module" src="{% static 'dist/assets/main.js' %}"></script>
+      <!-- In production, load built files -->
+      <script type="module" src="{% static 'dist/js/main.js' %}"></script>
     {% endif %}
-    {% block extra_js %}{% endblock %}
 </body>
 </html>

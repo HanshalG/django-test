@@ -8,19 +8,21 @@
     "preview": "vite preview",
     "res:build": "rescript",
     "res:clean": "rescript clean",
-    "res:dev": "rescript -w"
+    "res:dev": "rescript -w",
+    "prepare": "npm run res:build",
+    "start": "npm run dev"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Django with Vite and ReScript",
   "dependencies": {
     "@rescript/core": "^1.6.1",
-    "@rescript/react": "^0.12.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "resolutions": {
-    "@rescript/core": "^1.6.1"
+    "rescript": "^11.1.4",
+    "rescript-webapi": "^0.10.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.0.0"
+    "@jihchi/vite-plugin-rescript": "^7.0.0",
+    "vite": "^6.3.5"
   }
 }

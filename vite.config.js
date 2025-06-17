@@ -1,8 +1,15 @@
+<<<<<<< Updated upstream
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
+=======
+import { resolve } from 'path';
+import { defineConfig } from 'vite';
+import rescript from '@jihchi/vite-plugin-rescript';
+
+>>>>>>> Stashed changes
 export default defineConfig({
   root: './frontend',
   base: '/static/',
@@ -39,13 +46,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    react({
-      include: '**/*.{jsx,tsx,res}',
-      babel: {
-        presets: ['@babel/preset-react'],
-        plugins: []
-      }
-    })
+    rescript(),
   ],
   resolve: {
     alias: {
