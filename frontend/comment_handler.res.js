@@ -4,8 +4,8 @@
 var Js_dict = require("rescript/lib/js/js_dict.js");
 var Js_json = require("rescript/lib/js/js_json.js");
 var Belt_Array = require("rescript/lib/js/belt_Array.js");
+var Belt_Option = require("rescript/lib/js/belt_Option.js");
 var Caml_option = require("rescript/lib/js/caml_option.js");
-var Core__Promise = require("@rescript/core/src/Core__Promise.res.js");
 var Webapi__Dom__Document = require("rescript-webapi/src/Webapi/Dom/Webapi__Dom__Document.res.js");
 
 function getCookie(name) {
@@ -27,52 +27,24 @@ function getCookie(name) {
 }
 
 function fetchComments(postId, commentList) {
-  return Core__Promise.$$catch(fetch("/post/" + postId + "/comments/").then(function (prim) {
-                    return prim.json();
-                  }).then(function (data) {
-                  commentList.innerHTML = "";
-                  var comments = Js_json.decodeArray(data);
-                  if (comments !== undefined) {
-                    Belt_Array.forEach(comments, (function (comment) {
-                            var li = document.createElement("li");
-                            var commentDict = Js_json.decodeObject(comment);
-                            var authorName;
-                            if (commentDict !== undefined) {
-                              var username = Js_dict.get(commentDict, "author_username");
-                              if (username !== undefined) {
-                                var name = Js_json.decodeString(username);
-                                authorName = name !== undefined ? name : "Anonymous";
-                              } else {
-                                authorName = "Anonymous";
-                              }
-                            } else {
-                              authorName = "Anonymous";
-                            }
-                            var commentDict$1 = Js_json.decodeObject(comment);
-                            var body;
-                            if (commentDict$1 !== undefined) {
-                              var body$1 = Js_dict.get(commentDict$1, "body");
-                              if (body$1 !== undefined) {
-                                var body$2 = Js_json.decodeString(body$1);
-                                body = body$2 !== undefined ? body$2 : "";
-                              } else {
-                                body = "";
-                              }
-                            } else {
-                              body = "";
-                            }
-                            li.textContent = authorName + ": " + body;
-                            commentList.appendChild(li);
-                          }));
-                    return Promise.resolve();
-                  } else {
-                    commentList.innerHTML = "<li>Error loading comments. Please refresh the page.</li>";
-                    return Promise.resolve();
-                  }
-                }), (function (error) {
-                commentList.innerHTML = "<li>Error loading comments. Please refresh the page.</li>";
-                return Promise.resolve();
-              }));
+  var fetchComments$1 = fetch("/post/" + postId + "/comments/").then(function (prim) {
+            return prim.json();
+          }).then(function (json) {
+          commentList.innerHTML = "";
+          return Promise.resolve(Js_json.decodeArray(json));
+        }).then(function (opt) {
+        return Promise.resolve(Belt_Option.getExn(opt));
+      });
+  return fetchComments$1.then(function (array) {
+              return Promise.resolve(Belt_Array.forEach(array, (function (comment) {
+                                var li = document.createElement("li");
+                                var commentDict = Belt_Option.getExn(Js_json.decodeObject(comment));
+                                var body = Belt_Option.getExn(Js_json.decodeString(Belt_Option.getExn(Js_dict.get(commentDict, "body"))));
+                                var authorName = Belt_Option.getExn(Js_json.decodeString(Belt_Option.getExn(Js_dict.get(commentDict, "author_username"))));
+                                li.textContent = authorName + ": " + body;
+                                commentList.appendChild(li);
+                              })));
+            });
 }
 
 export async function submitComment(postId, content, commentList) {

@@ -34,51 +34,21 @@ type comment = {
 @val external alert: string => unit = "alert"
 
 let fetchComments = (postId, commentList) => {
-  Fetch.fetch("/post/" ++ postId ++ "/comments/")
+  let fetchComments = Fetch.fetch("/post/" ++ postId ++ "/comments/")
   ->then(Fetch.Response.json)
-  ->then(data => {commentList->Element.setInnerHTML("")
-    switch data->Js.Json.decodeArray {
-      | Some(comments) => {
-          comments->Belt.Array.forEach(comment => {
-            let li = document->Document.createElement("li")
-            let authorName = switch comment->Js.Json.decodeObject {
-            | Some(commentDict) => 
-                switch (commentDict->Js.Dict.get("author_username")) {
-                | Some(username) => 
-                    switch (username->Js.Json.decodeString) {
-                    | Some(name) => name
-                    | None => "Anonymous"
-                    }
-                | None => "Anonymous"
-                }
-            | None => "Anonymous"
-          }
-          let body = switch comment->Js.Json.decodeObject {
-            | Some(commentDict) => 
-                switch (commentDict->Js.Dict.get("body")) {
-                | Some(body) => 
-                    switch (body->Js.Json.decodeString) {
-                    | Some(body) => body
-                    | None => ""
-                    }
-                | None => ""
-                }
-            | None => ""
-          }
-            li->Element.setTextContent(authorName ++ ": " ++ body)
-            commentList->Element.appendChild(~child=li)
-          })
-    resolve()
-      }
-      | None => {
-          commentList->Element.setInnerHTML("<li>Error loading comments. Please refresh the page.</li>")
-          resolve()
-      }
-    }
-  })
-  ->catch(error => {
-    commentList->Element.setInnerHTML("<li>Error loading comments. Please refresh the page.</li>")
-    resolve()
+  ->then(json => { commentList->Element.setInnerHTML("");
+    Js.Json.decodeArray(json)->resolve})
+  ->then(opt => opt->Belt.Option.getExn->resolve)
+  
+  fetchComments->then(array => {
+    array->Belt.Array.forEach(comment => {
+      let li = document->Document.createElement("li")
+      let commentDict = comment->Js.Json.decodeObject->Belt.Option.getExn
+      let body = commentDict->Js.Dict.get("body")->Belt.Option.getExn->Js.Json.decodeString->Belt.Option.getExn
+      let authorName = commentDict->Js.Dict.get("author_username")->Belt.Option.getExn->Js.Json.decodeString->Belt.Option.getExn
+      li->Element.setTextContent(authorName ++ ": " ++ body)
+      commentList->Element.appendChild(~child=li)
+    })->resolve
   })
 }
 
