@@ -1,15 +1,7 @@
-<<<<<<< Updated upstream
-import { resolve } from 'node:path';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-// https://vitejs.dev/config/
-=======
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import rescript from '@jihchi/vite-plugin-rescript';
 
->>>>>>> Stashed changes
 export default defineConfig({
   root: './frontend',
   base: '/static/',
@@ -22,7 +14,7 @@ export default defineConfig({
         main: resolve(__dirname, 'frontend/main.js'),
       },
       output: {
-        entryFileNames: 'js/[name].js',
+        entryFileNames: ['js/[name].js'],
         chunkFileNames: 'js/[name].[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name.endsWith('.css')) {

@@ -1,7 +1,7 @@
 {
   "name": "django_test",
   "sources": {
-    "dir": "src",
+    "dir": "frontend",
     "subdirs": true
   },
   "package-specs": {

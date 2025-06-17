@@ -29,8 +29,3 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         post_id = self.kwargs['pk']
         serializer.save(post_id=post_id, author=self.request.user)
-
-
-class CounterView(TemplateView):
-    template_name = 'counter.html'
-    

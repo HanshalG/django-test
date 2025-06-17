@@ -1,4 +1,4 @@
-const postId = window.postId; // We'll set this via a template variable below
+const postId = window.postId;
 const commentList = document.getElementById('comment-list');
 
 function fetchComments() {

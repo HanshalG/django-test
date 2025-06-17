@@ -13,11 +13,8 @@
     "in-source": true
   },
   "bs-dependencies": [
-    "@rescript/react"
+    "rescript-webapi"
   ],
-  "reason": {
-    "react-jsx": 3
-  },
   "bsc-flags": [
     "-bs-super-errors",
     "-bs-no-version-header"

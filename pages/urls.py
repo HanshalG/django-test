@@ -5,7 +5,6 @@ from .views import (
     BlogListView, 
     BlogDetailView, 
     CommentListCreateAPIView,
-    CounterView
 )
 
 urlpatterns = [
@@ -14,5 +13,4 @@ urlpatterns = [
     path('blog/', BlogListView.as_view(), name='blog'),
     path('post/<int:pk>/', BlogDetailView.as_view(), name='post_detail'),
     path('post/<int:pk>/comments/', CommentListCreateAPIView.as_view(), name='post-comments'),
-    path('counter/', CounterView.as_view(), name='counter'),
 ]
