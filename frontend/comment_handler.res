@@ -52,30 +52,37 @@ let fetchComments = (postId, commentList) => {
   })
 }
 
+let submitComment = (postId: string, content: string, commentList: Dom.Element.t): promise<bool> => {
+  let headers = Js.Dict.empty()
+  Js.Dict.set(headers, "Content-Type", "application/json")
+  
+  switch getCookie("csrftoken") {
+  | Some(token) => Js.Dict.set(headers, "X-CSRFToken", token)
+  | None => ()
+  }
 
-%%raw(`
-export async function submitComment(postId, content, commentList) {
-    try {
-        const response = await fetch('/post/' + postId + '/comments/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({ body: content })
-        });
+  let body = Js.Dict.empty()
+  Js.Dict.set(body, "body", Js.Json.string(content))
 
-        if (!response.ok) {
-            throw new Error('Failed to post comment');
-        }
-
-        // Refresh comments after successful submission
-        await fetchComments(postId, commentList);
-        return true;
-    } catch (error) {
-        console.error('Error submitting comment:', error);
-        alert('Failed to post comment. Please try again.');
-        return false;
+  Fetch.fetchWithInit(
+    "/post/" ++ postId ++ "/comments/",
+    Fetch.RequestInit.make(
+      ~method_=Post,
+      ~headers=Fetch.HeadersInit.makeWithDict(headers),
+      ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(body))),
+      ()
+    )
+  )
+  ->then(response =>
+    if Fetch.Response.ok(response) {
+      fetchComments(postId, commentList)->then(_ => resolve(true))
+    } else {
+      reject(Js.Exn.raiseError("Failed to post comment"))
     }
+  )
+  ->catch(err => {
+    console->error("Error submitting comment:", err)
+    alert("Failed to post comment. Please try again.")
+    resolve(false)
+  })
 }
-`)

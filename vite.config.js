@@ -14,7 +14,7 @@ export default defineConfig({
         main: resolve(__dirname, 'frontend/main.js'),
       },
       output: {
-        entryFileNames: ['js/[name].js'],
+        entryFileNames: 'js/[name].js',
         chunkFileNames: 'js/[name].[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name.endsWith('.css')) {
